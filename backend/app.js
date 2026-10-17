@@ -17,7 +17,7 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(require("path").join(__dirname, "uploads")));
 
 app.use("/reviews", reviewRoutes);
 app.use("/shops", shopRoutes);
@@ -40,8 +40,9 @@ async function startServer() {
     try {
         await initSchema();
 
-        app.listen(5000, () => {
-            console.log("Server running on port 5000");
+        const port = Number(process.env.PORT || 5000);
+        app.listen(port, () => {
+            console.log(`Server running on port ${port}`);
         });
     } catch (error) {
         console.error("Unable to initialize server:", error);
