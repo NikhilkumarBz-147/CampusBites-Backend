@@ -27,6 +27,15 @@ app.use(
     express.static(path.join(__dirname, "uploads"))
 );
 
+// Serve the admin frontend before the /admin API router. The admin folder
+// has admin.html rather than an index.html, so map the directory URL to it.
+const frontendPath = path.join(__dirname, "..", "frontend");
+const adminFrontendPath = path.join(frontendPath, "admin");
+app.get(["/admin", "/admin/", "/admin/index.html"], (req, res) => {
+    res.sendFile(path.join(adminFrontendPath, "admin.html"));
+});
+app.use("/admin", express.static(adminFrontendPath));
+
 // API routes
 app.use("/reviews", reviewRoutes);
 app.use("/shops", shopRoutes);
@@ -37,7 +46,6 @@ app.use("/user", userRoutes);
 app.use("/activity", activityRoutes);
 
 // Serve frontend static files
-const frontendPath = path.join(__dirname, "..", "frontend");
 app.use(express.static(frontendPath));
 
 // Error handler
