@@ -6,7 +6,9 @@ let allShops = [];
 let currentShopId = null;
 let toastTimer = null;
 let adminPageInitialized = false;
-const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:5000`;
+const API_BASE_URL = window.location.protocol === "file:"
+    ? "http://localhost:5000"
+    : window.location.origin;
 
 document.addEventListener("DOMContentLoaded", () => {
     if (adminPageInitialized) {

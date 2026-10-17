@@ -1,4 +1,5 @@
 const pool = require("../db/promiseDb");
+const normalizeImageUrl = require("../utils/normalizeImageUrl");
 
 async function getShopRecommendations(userId) {
     const numericUserId = Number(userId);
@@ -9,10 +10,14 @@ async function getShopRecommendations(userId) {
         throw error;
     }
 
-    const [shops] = await pool.query(`
+    const [shopRows] = await pool.query(`
         SELECT id, name, type, rating, image_url
         FROM shops
     `);
+    const shops = shopRows.map((shop) => ({
+        ...shop,
+        image_url: normalizeImageUrl(shop.image_url)
+    }));
 
     const [favoriteShops] = await pool.query(`
         SELECT DISTINCT f.shop_id

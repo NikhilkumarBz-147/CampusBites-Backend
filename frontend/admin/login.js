@@ -11,7 +11,11 @@ function login() {
         return;
     }
 
-    fetch("http://localhost:5000/admin/login", {
+    const apiBaseUrl = window.location.protocol === "file:"
+        ? "http://localhost:5000"
+        : window.location.origin;
+
+    fetch(`${apiBaseUrl}/admin/login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

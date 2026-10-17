@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require("../db/db");
 const multer = require("multer");
 const path = require("path");
+const normalizeImageUrl = require("../utils/normalizeImageUrl");
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -24,7 +25,7 @@ router.post("/add", upload.single("image"), (req, res) => {
     let finalImage = image_url;
 
     if (req.file) {
-        finalImage = `http://localhost:5000/uploads/${req.file.filename}`;
+        finalImage = `/uploads/${req.file.filename}`;
     }
 
     if (!name || !type || !finalImage) {
@@ -148,7 +149,10 @@ router.get("/", (req, res) => {
             return res.status(500).send(err);
         }
 
-        res.json(result);
+        res.json(result.map((shop) => ({
+            ...shop,
+            image_url: normalizeImageUrl(shop.image_url)
+        })));
     });
 });
 

@@ -19,7 +19,9 @@
 function login() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const apiBaseUrl = `${window.location.protocol}//${window.location.hostname}:5000`;
+    const apiBaseUrl = window.location.protocol === "file:"
+        ? "http://localhost:5000"
+        : window.location.origin;
 
     fetch(`${apiBaseUrl}/user/login`, {
         method: "POST",

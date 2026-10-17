@@ -22,7 +22,11 @@ function signup() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    fetch("http://localhost:5000/user/signup", {
+    const apiBaseUrl = window.location.protocol === "file:"
+        ? "http://localhost:5000"
+        : window.location.origin;
+
+    fetch(`${apiBaseUrl}/user/signup`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

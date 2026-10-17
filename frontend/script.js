@@ -31,7 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentShopId = null;
     let recommendedIds = [];
 
-    const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:5000`;
+    const API_BASE_URL = window.location.protocol === "file:"
+        ? "http://localhost:5000"
+        : window.location.origin;
     const container = document.getElementById("shopContainer");
     const recommendationsContainer = document.getElementById("recommendations");
     const favoritesSection = document.getElementById("favoritesSection");
